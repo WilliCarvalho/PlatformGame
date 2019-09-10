@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: 5
-  push: 500
+  push: 300
   sensorFloor: {fileID: 363526244}
 --- !u!212 &474012716
 SpriteRenderer:

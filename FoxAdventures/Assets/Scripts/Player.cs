@@ -12,22 +12,42 @@ public class Player : MonoBehaviour
     private bool isOnFloor;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
+
+    private Animator anim;
     
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Move
         float move = Input.GetAxis("Horizontal") * velocity * Time.deltaTime;
         transform.Translate(move, 0.0f, 0.0f);
+        if(move > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if(move < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
 
+        //Get/set sensorFloor
         isOnFloor = Physics2D.Linecast(transform.position,
             sensorFloor.transform.position, 1 << LayerMask.NameToLayer("Floor"));
+
+        //Animations
+        anim.SetFloat("pMove", Mathf.Abs(move));
+        anim.SetBool("isOnFloor", isOnFloor);
+        anim.SetFloat("pJump", rb.velocity.y);
+
+        print(isOnFloor);
 
         //verify jump
         if (Input.GetButtonDown("Jump") && isOnFloor)
